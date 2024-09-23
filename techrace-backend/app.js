@@ -18,14 +18,14 @@ const server = http.createServer(app);
 
 // Habilitando o CORS para o Express
 app.use(cors({
-  origin: ['http://127.0.0.1:5501', 'http://localhost:5501'],
+  origin: ['http://127.0.0.1:5501', 'http://localhost:5501','http://127.0.0.1:5500'],
   methods: ['GET', 'POST'],
 }));
 
 // Inicializando o Socket.io com suporte a CORS
 const io = new Server(server, {
   cors: {
-    origin: ['http://127.0.0.1:5501', 'http://localhost:5501'],
+    origin: ['http://127.0.0.1:5501', 'http://localhost:5501', 'http://127.0.0.1:5500'],
     methods: ['GET', 'POST'],
   },
 });
@@ -115,6 +115,28 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('Cliente desconectado');
+  });
+});
+
+// Endpoint para envio de e-mails
+app.post('/sendEmail', (req, res) => {
+  const { name, email } = req.body;
+
+  // Passar os dados do nome e e-mail para o script Python
+  let options = {
+      mode: 'json',
+      pythonOptions: ['-u'],
+      args: [JSON.stringify({ name, email })]
+  };
+
+  PythonShell.run('emailing/send_email.py', options, (err, results) => {
+      if (err) {
+          console.error('Erro ao rodar o script Python:', err);
+          res.status(500).send('Erro ao processar a solicitação');
+          return;
+      }
+
+      res.json(results[0]);
   });
 });
 

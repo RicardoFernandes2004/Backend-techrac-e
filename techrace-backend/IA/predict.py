@@ -8,7 +8,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Carregar o modelo salvo
-model = joblib.load('race_predictor_model.pkl')
+# OBS: TROCAR PARA O SEU CAMINHO ABSOLUTO QUANDO FOR TESTAR
+model = joblib.load('C:/Users/a1197/Documents/GitHub/Backend-techrac-e/techrace-backend/IA/race_predictor_model.pkl')
 
 def predict_chances(data):
     features = np.array([data['avg_position'], data['avg_points']])
