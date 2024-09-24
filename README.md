@@ -10,7 +10,7 @@ O TechRac-E é uma aplicação web que permite prever as chances de vitória de 
 
 - **Node.js** instalado em sua máquina.
 - **Python 3** instalado.
-- Pacotes Python necessários: `pandas`, `scikit-learn`, `joblib`, `numpy`.
+- Pacotes Python necessários: `pandas`, `scikit-learn`, `joblib`, `numpy`, `matplotlib`.
 - Editor de código como **Visual Studio Code** (recomendado).
 
 ## Instalação
@@ -36,12 +36,12 @@ O TechRac-E é uma aplicação web que permite prever as chances de vitória de 
 
    ```bash
    cd IA
-   pip install pandas scikit-learn joblib numpy
+   pip install pandas scikit-learn joblib numpy matplotlib
    ```
 
    *Nota: Certifique-se de que os pacotes sejam instalados no ambiente Python correto.*
 
-## Estrutura do Projeto, Partes relevantes
+## Estrutura do Projeto, partes relevantes
 
 ```
 techrac-e/
@@ -51,7 +51,11 @@ techrac-e/
 │   │   ├── train_model.py
 │   │   ├── predict.py
 │   │   ├── formula_e_race_results.csv
-│   │   └── race_predictor_model.pkl
+│   │   ├── race_predictor_model.pkl
+│   │   ├── data analysis/
+│   │   │   └── race_performance_analysis.ipynb
+│   ├── mailing/
+│   │   └── send_email.py
 │   └── package.json
 ├── frontend/
 │   ├── index.html
@@ -61,9 +65,9 @@ techrac-e/
 ```
 
 - **backend/**: Contém o servidor Node.js e a integração com os scripts Python.
-- **IA/**: Contém os scripts Python para treinamento e previsão do modelo de IA.
+- **IA/**: Contém os scripts Python para treinamento e previsão do modelo de IA, além de análise de dados.
+- **mailing/**: Contém o script Python para envio de e-mails de boas-vindas.
 - **frontend/**: Contém os arquivos HTML e JavaScript para o front-end.
-- **race_predictor_model.pkl**: Arquivo do modelo de IA treinado.
 
 ## Como Executar
 
@@ -98,6 +102,29 @@ techrac-e/
 
    *Nota: Para evitar problemas de CORS, recomendamos usar uma extensão como "Live Server" no VSCode ou configurar um servidor local.*
 
+### Envio de E-mails com `send_email.py`
+
+Foi adicionada uma funcionalidade de envio de e-mails para confirmar a criação de uma conta. O script `send_email.py` está localizado na pasta `mailing/` e usa o protocolo SMTP para enviar e-mails.
+
+#### Dependências
+
+1. Certifique-se de que você tenha a biblioteca `smtplib` disponível em seu ambiente Python.
+
+#### Como Usar o Envio de E-mails
+
+1. Execute o script com os dados de nome e e-mail:
+
+   ```bash
+   python send_email.py '{"name": "Nome do Usuário", "email": "email@example.com"}'
+   ```
+   Ou
+   
+   abra o index.html localizado na pasta front-end e mande as informações por lá
+
+   Isso enviará um e-mail de boas-vindas para o novo usuário. 
+
+*Nota: O script está configurado para funcionar com Gmail, e a senha fornecida deve ser uma senha de aplicativo.*
+
 ### Treinamento do Modelo de IA (Opcional)
 
 Se desejar treinar o modelo novamente:
@@ -115,46 +142,93 @@ Se desejar treinar o modelo novamente:
    ```
 
    Isso irá gerar um novo arquivo `race_predictor_model.pkl`.
-   *Nota: Lembre-se de mudar o caminho do arquivo de treinamento, está absoluto*
 
-## Uso
+### Análise de Dados com Jupyter Notebook
 
-### Endpoint de Previsão via HTTP POST
+Foi adicionada uma pasta chamada `data analysis`, que contém um Jupyter Notebook para a análise de dados de desempenho dos pilotos na Fórmula E.
 
-Você pode fazer requisições POST para obter previsões:
+#### Dependências
 
-- **URL:** `http://localhost:3000/predict`
-- **Corpo da Requisição (JSON):**
+1. Certifique-se de que você tenha as bibliotecas `pandas`, `matplotlib` e `jupyter` instaladas.
 
-  ```json
-  {
-    "position": valor_da_posição_média,
-    "points": valor_da_média_de_pontos
-  }
-  ```
+   ```bash
+   pip install pandas matplotlib jupyter
+   ```
 
-- **Exemplo usando `curl`:**
+#### Como Usar o Jupyter Notebook
 
-  ```bash
-  curl -X POST -H "Content-Type: application/json" -d '{"position": 3, "points": 50}' http://localhost:3000/predict
-  ```
+1. No Jupyter, abra o arquivo de análise de dados (`driver_performance.ipynb`) e execute o notebook. Ele inclui o código para:
 
-### Comunicação em Tempo Real via WebSocket
+- Carregar os dados históricos de corridas (`formula_e_race_results.csv`).
+- Verificar a presença de dados duplicados e valores ausentes.
+- Analisar o desempenho dos pilotos em blocos de corridas e calcular a posição média.
+- Plotar gráficos de desempenho, como no exemplo do piloto **Lucas di Grassi**.
 
-- O front-end se comunica com o servidor usando WebSockets para previsões em tempo real.
-- Os dados enviados e recebidos estão em formato JSON.
+### Código de Exemplo para a Análise de Dados:
 
-**Exemplo de evento no `client.js`:**
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
 
-```javascript
-socket.emit('car_data', {
-  avg_position: 3,
-  avg_points: 50
-});
+# Carregar os dados históricos de corridas
+data = pd.read_csv('C:/Users/a1197/Documents/GitHub/Backend-techrac-e/techrace-backend/IA/formula_e_race_results.csv')
 
-socket.on('prediction', (data) => {
-  console.log('Chances de vitória recebidas do servidor: ', data.prediction);
-});
+# Mostrar as primeiras linhas do CSV
+data.head()
+
+# Verificar se há dados duplicados
+print("Dados duplicados: ", data.duplicated().sum())
+
+# Verificar valores ausentes
+print("Valores ausentes: ", data.isnull().sum())
+
+# Ordenar os dados pela ordem das corridas
+data = data.sort_values(by=['driver', 'race_num'])
+
+# Lista para armazenar os resultados
+season_performance = []
+
+# Definir o número de corridas por intervalo que queremos analisar
+intervalo_corridas = 5
+
+# Verificar a ordem das corridas para um piloto específico
+print("Verificar ordem das corridas para um piloto:")
+print(data[data['driver'] == 'Lucas di Grassi'][['race_num', 'rank_num']])
+
+# Loop para calcular o desempenho em intervalos de X corridas para cada piloto
+for driver in data['driver'].unique():
+    driver_data = data[data['driver'] == driver]
+    
+    # Dividir as corridas em blocos de 5 e calcular a média de posição
+    for i in range(0, len(driver_data), intervalo_corridas):
+        bloco_corridas = driver_data.iloc[i:i+intervalo_corridas]
+        
+        # Calcular a média de posição do bloco de corridas
+        avg_position = bloco_corridas['rank_num'].mean()
+        top_3_finishes = sum(bloco_corridas['rank_num'] <= 3)
+        
+        # Adicionar os resultados à lista
+        season_performance.append({
+            'driver': driver,
+            'interval_start': bloco_corridas['race_num'].min(),
+            'interval_end': bloco_corridas['race_num'].max(),
+            'avg_position': avg_position,
+            'top_3_finishes': top_3_finishes
+        })
+
+# Converter os resultados para um DataFrame
+season_performance_df = pd.DataFrame(season_performance)
+
+# Visualizar as primeiras linhas do DataFrame final
+print(season_performance_df.head())
+
+# Plotando o gráfico para o desempenho de Lucas di Grassi
+pilot_data = season_performance_df[season_performance_df['driver'] == 'Lucas di Grassi']
+plt.plot(pilot_data['interval_start'], pilot_data['avg_position'], marker='o')
+plt.title(f'Desempenho de Lucas di Grassi ao longo das corridas')
+plt.xlabel('Corridas (race_num)')
+plt.ylabel('Posição Média')
+plt.show()
 ```
 
 ## Tecnologias Utilizadas
@@ -173,6 +247,7 @@ socket.on('prediction', (data) => {
   - scikit-learn
   - joblib
   - numpy
+  - matplotlib
 - **Outros:**
   - Visual Studio Code
   - npm
