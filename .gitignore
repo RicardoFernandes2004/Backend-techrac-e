@@ -1,0 +1,2 @@
+# Ignorar o arquivo send_email.py na pasta emailing
+techrace-backend/emailing/send_email.py
