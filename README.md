@@ -2,6 +2,13 @@
 
 Bem-vindo ao **TechRac-E**! Este projeto integra Node.js e Python para fornecer previsões baseadas em dados de corridas da Fórmula E. A aplicação utiliza um modelo de aprendizado de máquina para prever as chances de vitória de um piloto com base em sua posição média e média de pontos.
 
+## Grupo
+Ricardo Fernandes de Aquino (RM 554597)
+Kauã Soares Guimarães (RM 559044)
+Dayana Ticona Quispe (RM 558023)
+Fabrini Soares (RM 557813)
+Rickelmyn de souza Ruescas (RM 556055)
+
 ## Descrição do Projeto
 
 O TechRac-E é uma aplicação web que permite prever as chances de vitória de um piloto na Fórmula E. Utiliza um servidor Node.js para gerenciar as requisições e comunicações em tempo real via WebSockets, e integra scripts Python que executam modelos de aprendizado de máquina para fornecer previsões baseadas em dados históricos.
