@@ -74,7 +74,7 @@ techrac-e/
 - **backend/**: Contém o servidor Node.js e a integração com os scripts Python.
 - **IA/**: Contém os scripts Python para treinamento e previsão do modelo de IA, além de análise de dados.
 - **mailing/**: Contém o script Python para envio de e-mails de boas-vindas.
-- **frontend/**: Contém os arquivos HTML e JavaScript para o front-end.
+- **frontend/**: Contém os arquivos em React para o front-end
 
 ## Como Executar
 
@@ -103,9 +103,13 @@ techrac-e/
 
 ### Frontend
 
-1. **Abra o arquivo `index.html`:**
+1. **Abra o arquivo `frontend`:**
 
-   Navegue até a pasta `frontend/` e abra o `index.html` em um navegador.
+   Navegue até a pasta `frontend/` e abra o `index.js` usando o comando bash.
+   
+   ```bash
+   npm start
+   ```
 
    *Nota: Para evitar problemas de CORS, recomendamos usar uma extensão como "Live Server" no VSCode ou configurar um servidor local.*
 
@@ -124,9 +128,6 @@ Foi adicionada uma funcionalidade de envio de e-mails para confirmar a criação
    ```bash
    python send_email.py '{"name": "Nome do Usuário", "email": "email@example.com"}'
    ```
-   Ou
-   
-   abra o index.html localizado na pasta front-end e mande as informações por lá
 
    Isso enviará um e-mail de boas-vindas para o novo usuário. 
 
