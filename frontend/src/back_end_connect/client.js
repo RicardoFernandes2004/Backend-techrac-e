@@ -1,4 +1,6 @@
-const socket = io('http://localhost:3000');
+import { io } from 'socket.io-client'; // Importa a função io corretamente
+
+const socket = io('http://localhost:3000'); 
 
 // Função para enviar os dados do carro
 function sendCarData(carData) {
@@ -32,3 +34,6 @@ socket.on('connect_error', (error) => {
 socket.on('disconnect', () => {
   console.log('Desconectado do WebSocket');
 });
+
+// Tornando as funções acessíveis globalmente
+export { sendCarData, socket };

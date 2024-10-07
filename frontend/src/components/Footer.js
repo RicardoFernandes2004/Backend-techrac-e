@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Importa o Link do react-router-dom
 
 function Footer() {
   return (
@@ -21,12 +22,13 @@ function Footer() {
           <div className="footer_frame">
             <h2>Quick Links:</h2>
             <ul>
-                <li><a href="#">Teams</a></li>
-                <li><a href="#">Drivers</a></li>
-                <li><a href="#">Rules & Regulations</a></li>
-                <li><a href="#">Partners</a></li>
-                <li><a href="#">Media</a></li>
-                <li><a href="#">Contact Us</a></li>
+              <li><a href="https://www.fiaformulae.com/pt-br/teams">Teams</a></li>
+              <li><a href="https://www.fiaformulae.com/pt-br/drivers">Drivers</a></li>
+              <li><a href="https://www.fiaformulae.com/pt-br/championship/rules-and-regulations">Rules & Regulations</a></li>
+              <li><a href="https://www.fiaformulae.com/pt-br/partners">Partners</a></li>
+              <li><a href="https://mediacentre.fiaformulae.com">Media</a></li>
+              {/* Substitui o link estático por um Link do React Router */}
+              <li><Link to="/Guess">Prediction</Link></li>
             </ul>
           </div>
         </div>

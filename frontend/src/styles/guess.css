@@ -1,0 +1,75 @@
+/* Garantir que o body ocupe a altura completa */
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  /* Container principal do app */
+  .containerAll {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que ocupe toda a altura da viewport */
+  }
+  
+  /* Novo contêiner para centralizar o Guess abaixo da navbar */
+  .guess-page-container {
+    flex: 1; /* Permite que este contêiner ocupe todo o espaço disponível */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilos da guess-container */
+  .guess-container { 
+    max-width: 600px;
+    margin-top: 800px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Adicione um fundo leve para destaque (opcional) */
+    border-radius: 8px; /* Bordas arredondadas para um visual mais limpo */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra leve para destacar */
+  }
+  
+  .guess-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .guess-container form div {
+    margin-bottom: 15px;
+  }
+  
+  .guess-container label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+  }
+  
+  .guess-container input {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .guess-container button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .guess-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .guess-container p {
+    margin-top: 20px;
+    font-style: italic;
+  }
+  
+  .guess-container div > h2 {
+    margin-top: 30px;
+  }
+  

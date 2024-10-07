@@ -27,6 +27,8 @@ function Main({ goToQuiz }) {
   const prevSlide = () => {
     showSlide(slideIndex - 1);
   };
+  const HIGHSCORE = localStorage.getItem('highestScore');
+  const USER = localStorage.getItem('username')
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -83,7 +85,7 @@ function Main({ goToQuiz }) {
         <div className="ranking_outer_rectangle">
           <div className="ranking_inner_rectangle">
             <ul>
-              <li>#1 - </li>
+              <li>#1 - {USER}: {HIGHSCORE}</li>
               <li>#2 - </li>
               <li>#3 - </li>
               <li>#4 - </li>
@@ -94,7 +96,7 @@ function Main({ goToQuiz }) {
               <li>#9 - </li>
               <li>#10 - </li>                
             </ul>
-            <p>My Ranking: #x</p>
+            <p>My Ranking: #1</p>
           </div>
         </div>
       </div>
