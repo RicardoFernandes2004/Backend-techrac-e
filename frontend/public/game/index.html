@@ -9,7 +9,14 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Press+Start+2P"
     />
-    <link rel="stylesheet" href="/frontend/css/gameCSS.css">
+    <link rel="stylesheet" href="../css/gameCSS.css">
+    <style>
+            /* Correção para o último span em #controls */
+            #controls span:last-child {
+              writing-mode: horizontal-tb !important;
+              transform: none !important;
+            }
+    </style>
     <script>
       window.console = window.console || function (t) {};
     </script>
@@ -35,18 +42,26 @@
       </div>
 
       <div id="home">
-        <h1>Dash</h1>
+        <h1>RACE</h1>
         <p id="text"></p>
 
         <div id="highscore"></div>
       </div>
     </div>
 
+    <!-- Indicador de Boost movido para fora do div 'game' -->
+    <div id="boost-indicator">
+      <div id="boost-bar"></div>
+      <div id="boost-text">BOOST</div>
+    </div>
+
     <div id="controls">
       <span><span>C</span>insert coin</span>
       <span><span>M</span>mute</span>
+      <span><span>B</span>boost</span> <!-- Novo indicador de boost -->
       <span><span>&lt;</span><span>&gt;</span>move</span>
-      <span><span>&lt;</span><span>&gt;</span>accelerate</span>
+      <span><span>&uarr;</span>accelerate</span>
+
     </div>
     <script src="javascript/1.js"></script>
 
@@ -290,7 +305,7 @@
       }
 
       // ------------------------------------------------------------
-      // global varriables
+      // global variables
       // ------------------------------------------------------------
 
       const highscores = [];
@@ -320,6 +335,15 @@
       };
 
       const mapLength = 15000;
+
+      // Variáveis para o boost
+      let boostActive = false;
+      let boostDuration = 5; // Duração do boost em segundos
+      let boostTimer = 0;
+      let boostSpeedIncrease = 100; // Aumento de velocidade durante o boost
+      let boostCooldown = 10; // Tempo de espera até poder usar o boost novamente
+      let boostAvailable = true; // Indica se o boost está disponível
+      let boostCooldownTimer = 0;
 
       // loop
       let then = timestamp();
@@ -497,7 +521,41 @@
           speed = accelerate(speed, offDecel, step);
         }
 
-        speed = speed.clamp(0, maxSpeed);
+        // Implementação do boost
+        // Verifica se o jogador pressionou 'B' e se o boost está disponível
+        if (inGame && KEYS.KeyB && boostAvailable) {
+          boostActive = true;
+          boostAvailable = false;
+          boostTimer = boostDuration;
+          boostCooldownTimer = boostCooldown;
+          // A velocidade será ajustada no clamp abaixo
+        }
+
+        // Se o boost estiver ativo, decrementa o tempo do boost
+        if (boostActive) {
+          boostTimer -= step;
+          if (boostTimer <= 0) {
+            boostActive = false;
+          }
+        }
+
+        // Gerencia o cooldown do boost
+        if (!boostAvailable) {
+          boostCooldownTimer -= step;
+          if (boostCooldownTimer <= 0) {
+            boostAvailable = true;
+          }
+        }
+
+        // Ajusta a velocidade máxima durante o boost
+        let currentMaxSpeed = maxSpeed;
+        if (boostActive) {
+          currentMaxSpeed += boostSpeedIncrease;
+        }
+        speed = speed.clamp(0, currentMaxSpeed);
+
+        // Atualiza o indicador de boost
+        updateBoostIndicator();
 
         // update map
         let current = map[mapIndex];
@@ -543,7 +601,6 @@
         }
 
         // sound
-        if (speed > 0) audio.play("engine", speed * 4);
 
         // draw cloud
         cloud.style.backgroundPosition = `${
@@ -681,6 +738,31 @@
         }
       }
 
+      // Função para atualizar o indicador de boost
+      function updateBoostIndicator() {
+        const boostBar = document.getElementById('boost-bar');
+        const boostText = document.getElementById('boost-text');
+
+        if (boostActive) {
+          // Atualiza a barra de boost durante o uso
+          const percentage = (boostTimer / boostDuration) * 100;
+          boostBar.style.width = `${percentage}%`;
+          boostBar.style.backgroundColor = '#ff0'; // Cor amarela durante o boost
+          boostText.innerText = 'BOOST ATIVO';
+        } else if (!boostAvailable) {
+          // Atualiza a barra de cooldown
+          const percentage = (boostCooldownTimer / boostCooldown) * 100;
+          boostBar.style.width = `${percentage}%`;
+          boostBar.style.backgroundColor = '#f00'; // Cor vermelha durante o cooldown
+          boostText.innerText = 'RECARREGANDO';
+        } else {
+          // Boost disponível
+          boostBar.style.width = '100%';
+          boostBar.style.backgroundColor = '#0f0'; // Cor verde quando disponível
+          boostText.innerText = 'PRESSIONE B PARA BOOST';
+        }
+      }
+
       // ------------------------------------------------------------
       // init
       // ------------------------------------------------------------
@@ -699,6 +781,12 @@
         cloudOffset = 0;
         sectionProg = 0;
         mapIndex = 0;
+
+        // Reinicia as variáveis do boost
+        boostActive = false;
+        boostAvailable = true;
+        boostTimer = 0;
+        boostCooldownTimer = 0;
 
         for (let line of lines) line.curve = line.y = 0;
 

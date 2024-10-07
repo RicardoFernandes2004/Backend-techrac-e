@@ -18,14 +18,14 @@ const server = http.createServer(app);
 
 // Habilitando o CORS para o Express
 app.use(cors({
-  origin: ['http://127.0.0.1:5501', 'http://localhost:5501','http://127.0.0.1:5500'],
+  origin: ['http://127.0.0.1:5501', 'http://localhost:5501','http://127.0.0.1:5500','http://localhost:3001'],
   methods: ['GET', 'POST'],
 }));
 
 // Inicializando o Socket.io com suporte a CORS
 const io = new Server(server, {
   cors: {
-    origin: ['http://127.0.0.1:5501', 'http://localhost:5501', 'http://127.0.0.1:5500'],
+    origin: ['http://127.0.0.1:5501', 'http://localhost:5501', 'http://127.0.0.1:5500','http://localhost:3001'],
     methods: ['GET', 'POST'],
   },
 });
