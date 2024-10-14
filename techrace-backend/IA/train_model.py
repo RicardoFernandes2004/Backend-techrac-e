@@ -4,7 +4,7 @@ from xgboost import XGBClassifier
 import joblib
 
 # Carregar os dados históricos de corridas
-data = pd.read_csv('techrace-backend/IA/formula_e_race_results.csv')
+data = pd.read_csv('formula_e_race_results.csv')
 
 # Criar sistema de pontuação baseado no rank_num
 def calculate_points(rank):
@@ -63,5 +63,6 @@ model.fit(X_train, y_train)
 accuracy = model.score(X_test, y_test)
 print(f'Precisão do modelo XGBoost: {accuracy * 100:.2f}%')
 
+
 # Salvar o modelo
-joblib.dump(model, 'techrace-backend/IA/race_predictor_model.pkl')
+joblib.dump(model, 'race_predictor_model.pkl')
