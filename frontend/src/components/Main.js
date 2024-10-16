@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Importa o Link do react-router-dom
+
 
 function Main({ goToQuiz }) {
   const slides = [
@@ -49,7 +51,7 @@ function Main({ goToQuiz }) {
       {/* Main Hyperlinks Container */}
       <div className="main_hyperlinks_container">
         <h2><a href="#" onClick={handleRaceClick}>Race</a></h2> {/* Redireciona para o jogo */}
-        <h2><a href="#" onClick={goToQuiz}>Quiz</a></h2> {/* Chama a função goToQuiz ao clicar */}
+        <h2><Link to="/quiz"><a href="#">Quiz</a></Link> </h2>{/* Chama a função goToQuiz ao clicar */}
       </div>
 
       {/* Info Slider */}
