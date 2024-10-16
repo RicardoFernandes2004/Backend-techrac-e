@@ -1,4 +1,4 @@
-import { io } from 'socket.io-client'; // Importa a função io corretamente
+import { io } from 'socket.io-client'; 
 
 const socket = io('http://localhost:3000'); 
 
@@ -15,15 +15,15 @@ socket.on('prediction', (data) => {
 });
 
 // Verificar a conexão com o WebSocket
-socket.on('connect', () => {
-  console.log('Conectado ao WebSocket');
-  const carData = {
-    avg_position: 3,  // Agora enviamos avg_position
-    avg_points: 50    // E avg_points, que a IA espera
-  };
-  sendCarData(carData);  // Enviar os dados após a conexão ser estabelecida
-  console.log('Dados enviados após a conexão:', carData);
-});
+// socket.on('connect', () => {
+//   console.log('Conectado ao WebSocket');
+//   const carData = {
+//     avg_position: 1,  // Agora enviamos avg_position
+//     avg_points: 25    // E avg_points, que a IA espera
+//   };
+//   sendCarData(carData);  // Enviar os dados após a conexão ser estabelecida
+//   console.log('Dados enviados após a conexão:', carData);
+// });
 
 // Captura erros de conexão
 socket.on('connect_error', (error) => {
