@@ -52,13 +52,13 @@
     <!-- Indicador de Boost movido para fora do div 'game' -->
     <div id="boost-indicator">
       <div id="boost-bar"></div>
-      <div id="boost-text">BOOST</div>
+      <div id="boost-text">Attack mode</div>
     </div>
 
     <div id="controls">
       <span><span>C</span>insert coin</span>
       <span><span>M</span>mute</span>
-      <span><span>B</span>boost</span> <!-- Novo indicador de boost -->
+      <span><span>B</span>Attack Mode</span> <!-- Novo indicador de boost -->
       <span><span>&lt;</span><span>&gt;</span>move</span>
       <span><span>&uarr;</span>accelerate</span>
 
@@ -808,7 +808,7 @@
           }`;
         }
         // Mostra o highest score no display
-        highscore.innerHTML = `Highest Score: ${highestScore}`;
+        highscore.innerHTML = `Highest Score: ${parseInt(highestScore)}`;
       }
 
       function init() {
