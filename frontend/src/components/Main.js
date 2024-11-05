@@ -80,7 +80,7 @@ function Main({ goToQuiz }) {
         <div className="ranking_outer_rectangle">
           <div className="ranking_inner_rectangle">
             <ul>
-              <li>#1 - {USER}: {HIGHSCORE}</li>
+              <li>#1 - {USER}: {parseInt(HIGHSCORE)}</li> 
               <li>#2 - </li>
               <li>#3 - </li>
               <li>#4 - </li>
