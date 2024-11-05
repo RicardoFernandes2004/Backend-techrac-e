@@ -57,17 +57,10 @@ function Main({ goToQuiz }) {
       {/* Info Slider */}
       <div className="info_slider">
         <div className="info_slider_option_container">
-          <h1>About</h1>
-          <p>
-            Mahindra Racing has competed in Formula E since its inception in 2014-2015...
-          </p>
-          <div className="info_slider_buttons_container">
-            <button className="prev" onClick={() => { clearInterval(intervalId); prevSlide(); }}>&#10094;</button>
-            <button className="next" onClick={() => { clearInterval(intervalId); nextSlide(); }}>&#10095;</button>
-          </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/h1ovY8oSjDY?si=rxAl2JG2k0-2Xp7S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style={{zIndex: 10}}></iframe>
         </div>
         <div className="info_slider_images">
-          <img className="mahindra_logo" src="/img/LogoMahindra2 1.png" alt="mahindra_logo" />
+          <img className="mahindra_logo" src="/img/LogoMahindra2 1.png" alt="mahindra_logo" style={{visibility: 'hidden'}}/>
           {slides.map((slide, index) => (
             <img
               key={index}
