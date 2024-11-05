@@ -26,9 +26,14 @@ function Header({ toggleProfile, setShowCoins }) {
         <h1 className="formula-e">TECHRAC-E</h1>
       </section>
       <section className="hyperlink_container">
+      <div className="hyperlink_frame">
+          <div className="hyperlink_rectangle">
+            <a href="https://www.reddit.com/r/TechRace/">Forum</a>
+          </div>
+        </div>
         <div className="hyperlink_frame">
           <div className="hyperlink_rectangle">
-            <a href="#problem" onClick={(e) => handleSmoothScroll(e, 'problem')}>The problem</a>
+            <a href="#problem" onClick={(e) => handleSmoothScroll(e, 'problem')}>Live Now</a>
           </div>
         </div>
         <div className="hyperlink_frame">

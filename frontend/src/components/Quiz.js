@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/quiz.module.css"; // Estilos para o quiz (opcional)
+import { Link } from "react-router-dom";
 
 
 const questions = [
@@ -114,11 +115,12 @@ function Quiz({ goToMain }) {
   };
 
   return (
+    
     <div className={styles.quizContainer}>
       {showScore ? (
         <div className={styles.scoreSection}>
           Você acertou {score} de {questions.length} perguntas!
-          <button onClick={goToMain}>Voltar para o Main</button> {/* Botão para voltar ao Main */}
+          <Link to={'/'}><button> Voltar para o Main</button></Link>
         </div>
       ) : (
         <>
